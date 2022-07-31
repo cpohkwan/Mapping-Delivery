@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta title="Delivery" />
+
+    <style>
+      #scrolly {
+        position: relative;
+        padding: 0 10rem 1rem 10rem;
+      }
+
+      .scrolly-overlay {
+        position: relative;
+        padding: 0;
+        max-width: 35rem;
+        margin: 0 auto;
+      }
+
+      .sticky-thing {
+        position: -webkit-sticky;
+        position: sticky;
+        left: 0;
+        width: 100%;
+        margin: 0;
+        z-index: 0;
+        top: 0;
+        height: 100vh; /*vh = viewport height*/
+
+        /* Center everything inside */
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .ai2html *:hover {
+        fill: rgb(0, 13, 255);
+      }
+
+      .step {
+        margin: 0 auto 2rem auto;
+        margin-bottom: 25rem;
+        background-color: #eee;
+        background-color: #fff;
+        color: black;
+      }
+
+      .step p {
+        text-align: center;
+        padding: 1rem;
+        font-size: 1.2rem;
+      }
+
+      .hidden {
+        visibility: hidden;
+      }
+
+      /* When it's less than 700 pixels wide, do normal scrollytelling */
+      @media only screen and (min-width: 700px) {
+        #scrolly.side-by-side {
+          display: flex;
+        }
+
+        #scrolly.side-by-side > div {
+          flex-basis: 0;
+          flex-grow: 1;
+          flex-shrink: 1;
+          padding: 0.75em;
+        }
+
+        #scrolly.side-by-side .scrolly-overlay {
+          margin-top: 70vh;
+          order: 0;
+          /* Change these to adjust sizing options */
+          min-width: 15rem;
+          max-width: 20rem;
+        }
+
+        #scrolly.side-by-side .sticky-thing {
+          order: 1;
+          flex-grow: 2;
+        }
+      }
+
+      .content {
+        text-align: center;
+        margin: 0 10rem 0 10rem; /*top right bottom left*/
+      }
+
+      .content h1 {
+        font-size: 2.5rem;
+        font-family: "Calibri", "Trebuchet MS", sans-serif;
+        text-align: center;
+      }
+
+      .content byline {
+        font-size: 1.2rem;
+        font-family: "Calibri", "Trebuchet MS", sans-serif;
+        font-style: italic;
+        text-align: left;
+      }
+
+      .content p {
+        font-size: 1.3rem;
+        font-family: "Calibri", "Trebuchet MS", sans-serif;
+        text-align: justify;
+        margin-bottom: 1rem;
+      }
+
+      .content h5 {
+        font-weight: normal;
+        font-size: 1rem;
+        font-family: "Calibri", "Trebuchet MS", sans-serif;
+        text-align: center;
+        font-style: italic;
+      }
+    </style>
+    <script src="https://unpkg.com/intersection-observer@0.5.1/intersection-observer.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/scrollama/3.0.4/scrollama.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.3.0/d3.min.js"></script>
+  </head>
+
+  <body>
+    <div class="content">
+      <h1>Our Long and Expensive Delivery Route</h1>
+      <byline>Story by Cheong Poh Kwan</byline>
+      <p>
+        Covid-19 has turned many bored people in Singapore into small-time
+        home-based business owners, selling everything from handmade soy
+        candles, homebrewed coffee to all kinds of grandma recipes on platforms
+        like Instagram, Cococart, Carousell and Shopee.
+      </p>
+
+      <p>
+        My husband David and I jumped on the bandwagon in Dec 2020 too. We sell
+        a Hakka heritage dish called Lei Cha, or Lui Cha -- depending on whether
+        you're pronouncing it in Mandarin Chinese or the Hakka/Cantonese
+        dialect. It's been widely (mis)translated as Thunder Tea although it's
+        got nothing to do with thunder, thunderstorm or Thor.
+      </p>
+
+      <img
+        src="greensmith-sgfoodiehunt.png"
+        alt="Greensmith Thunder Tea Cauliflower Rice Set"
+        width="500"
+        height="600"
+      />
+      <p></p>
+
+      <h5>
+        This is a keto-friendly version of our Thunder Tea rice set. Image by
+        @sgfoodiehunt, an Instagram food reviewer.
+      </h5>
+
+      <p>
+        You can think of Lei Cha as the Chinese Hakka version of Japanese
+        ochazuke, Korean bibimbap, Hawaiian poke bowl, or simply a healthy and
+        hearty salad bowl. The dressing that comes with it is a basilicious
+        paste that we blend using a number of herbs, peanuts and sesame seeds.
+        It can be diluted with hot water or tea, and served as a soup on the
+        side.
+      </p>
+
+      <video width="600" height="500" controls>
+        <source src="Greensmith-video.ogg" type="video/ogg" />
+        <source src="Greensmith-video.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+
+      <p></p>
+
+      <h5>
+        This video shows the making of our Thunder Tea paste. Video by Pei Rong.
+      </h5>
+
+      <p>
+        Our Lei Cha soup paste has been quite a hit with our customers, in
+        particular among health-concious and weight-conscious women. We've sold
+        over 800 jars of them on Shopee and another 400 or so on Instagram - a
+        result that we are pretty happy with considering how little marketing we
+        do.
+      </p>
+
+      <p>
+        Making the Lei Cha paste is a laborious affair, but an even bigger
+        problem we've been facing is the delivery cost. The charges for engaging
+        professional logistics companies to deliver our chilled paste to many
+        locations across the island within a few hours are prohibitive. Hence,
+        we've been doing it ourselves, spending hours and hours on the road
+        every Saturday to fulfill the orders for the week.
+      </p>
+      <p>
+        Here's an example of our very long delivery route on July 2, the day
+        when fuel price in Singapore surged to $3.15 or higher per liter -
+        depending on the brand and type of fuel.
+      </p>
+    </div>
+
+    <section id="scrolly">
+      <div class="sticky-thing">
+        <div class="ai2html-container">
+          <!-- ai2html goes below this line -->
+
+          <!-- Generated by ai2html v0.113.0 - 2022-07-31 17:48 -->
+          <!-- ai file: Delivery_route.svg -->
+          <style media="screen,print">
+            #g-Delivery_route_svg-Artboard_1-box,
+            #g-Delivery_route_svg-Artboard_1-box .g-artboard {
+              margin: 0 auto;
+            }
+            #g-Delivery_route_svg-Artboard_1-box p {
+              margin: 0;
+            }
+            #g-Delivery_route_svg-Artboard_1-box .g-aiAbs {
+              position: absolute;
+            }
+            #g-Delivery_route_svg-Artboard_1-box .g-aiImg {
+              position: absolute;
+              top: 0;
+              display: block;
+              width: 100% !important;
+            }
+            #g-Delivery_route_svg-Artboard_1-box .g-aiSymbol {
+              position: absolute;
+              box-sizing: border-box;
+            }
+            #g-Delivery_route_svg-Artboard_1-box .g-aiPointText p {
+              white-space: nowrap;
+            }
+            #g-Delivery_route_svg-Artboard_1 {
+              position: relative;
+              overflow: hidden;
+            }
+            #g-Delivery_route_svg-Artboard_1 p {
+              font-family: arial, helvetica, sans-serif;
+              line-height: 14px;
+              height: auto;
+              opacity: 1;
+              letter-spacing: 0em;
+              font-size: 12px;
+              text-align: left;
+              color: rgb(51, 51, 51);
+              text-transform: none;
+              padding-bottom: 0;
+              padding-top: 0;
+              mix-blend-mode: normal;
+              font-style: normal;
+              position: static;
+            }
+            #g-Delivery_route_svg-Artboard_1 .g-pstyle0 {
+              height: 14px;
+            }
+          </style>
+
+          <div id="g-Delivery_route_svg-Artboard_1-box" class="ai2html">
+            <!-- Artboard: Artboard_1 -->
+            <div
+              id="g-Delivery_route_svg-Artboard_1"
+              class="g-artboard"
+              style=""
+              data-aspect-ratio="1.667"
+              data-min-width="0"
+            >
+              <div style="padding: 0 0 60% 0"></div>
+              <img
+                id="g-Delivery_route_svg-Artboard_1-img"
+                class="g-Delivery_route_svg-Artboard_1-img g-aiImg"
+                alt=""
+                src="Delivery_route_svg-Artboard_1.png"
+              />
+              <!-- Generator: Adobe Illustrator 26.3.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+              <svg
+                class="g-Delivery_route_svg-Artboard_1-interactions-img g-aiImg"
+                version="1.2"
+                baseProfile="tiny"
+                id="g-Delivery_route_svg-Artboard_1-interactions-img"
+                xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink"
+                x="0px"
+                y="0px"
+                viewBox="0 0 1000 600"
+                overflow="visible"
+                xml:space="preserve"
+              >
+                <g>
+                  <path
+                    id="home"
+                    data-name="home"
+                    fill="green"
+                    d="M392.5,331c0,2.485-2.015,4.5-4.5,4.5
+		s-4.5-2.015-4.5-4.5s2.015-4.5,4.5-4.5S392.5,328.515,392.5,331z"
+                  />
+                  <path
+                    id="north"
+                    data-name="north"
+                    fill="#007527"
+                    d="M455.5,154c0,2.485-2.015,4.5-4.5,4.5
+		s-4.5-2.015-4.5-4.5s2.015-4.5,4.5-4.5S455.5,151.515,455.5,154z"
+                  />
+                  <g id="south" data-name="south">
+                    <path
+                      fill="#007527"
+                      d="M493.5,417c0,2.485-2.015,4.5-4.5,4.5s-4.5-2.015-4.5-4.5s2.015-4.5,4.5-4.5S493.5,414.515,493.5,417z"
+                    />
+                    <path
+                      fill="#007527"
+                      d="M464.5,378c0,2.485-2.015,4.5-4.5,4.5s-4.5-2.015-4.5-4.5s2.015-4.5,4.5-4.5S464.5,375.515,464.5,378z"
+                    />
+                    <path
+                      fill="#007527"
+                      d="M402.5,389c0,2.485-2.015,4.5-4.5,4.5s-4.5-2.015-4.5-4.5s2.015-4.5,4.5-4.5S402.5,386.515,402.5,389z"
+                    />
+                    <path
+                      fill="#007527"
+                      d="M405.5,366c0,2.485-2.015,4.5-4.5,4.5s-4.5-2.015-4.5-4.5s2.015-4.5,4.5-4.5S405.5,363.515,405.5,366z"
+                    />
+                  </g>
+                  <g id="centre" data-name="centre">
+                    <path
+                      fill="#007527"
+                      d="M610.5,307c0,2.485-2.015,4.5-4.5,4.5s-4.5-2.015-4.5-4.5s2.015-4.5,4.5-4.5S610.5,304.515,610.5,307z"
+                    />
+                    <path
+                      fill="#007527"
+                      d="M576.5,326c0,2.485-2.015,4.5-4.5,4.5s-4.5-2.015-4.5-4.5s2.015-4.5,4.5-4.5S576.5,323.515,576.5,326z"
+                    />
+                    <path
+                      fill="#007527"
+                      d="M579.5,345c0,2.485-2.015,4.5-4.5,4.5s-4.5-2.015-4.5-4.5s2.015-4.5,4.5-4.5S579.5,342.515,579.5,345z"
+                    />
+                  </g>
+                  <g id="northeast" data-name="northeast">
+                    <path
+                      fill="#007527"
+                      d="M688.5,209c0,2.485-2.015,4.5-4.5,4.5s-4.5-2.015-4.5-4.5s2.015-4.5,4.5-4.5S688.5,206.515,688.5,209z"
+                    />
+                    <path
+                      fill="#007527"
+                      d="M642.5,236c0,2.485-2.015,4.5-4.5,4.5s-4.5-2.015-4.5-4.5s2.015-4.5,4.5-4.5S642.5,233.515,642.5,236z"
+                    />
+                    <path
+                      fill="#007527"
+                      d="M646.5,218c0,2.485-2.015,4.5-4.5,4.5s-4.5-2.015-4.5-4.5s2.015-4.5,4.5-4.5S646.5,215.515,646.5,218z"
+                    />
+                  </g>
+                  <g id="west" data-name="west">
+                    <path
+                      fill="#007527"
+                      d="M316.5,322c0,2.485-2.015,4.5-4.5,4.5s-4.5-2.015-4.5-4.5s2.015-4.5,4.5-4.5S316.5,319.515,316.5,322z"
+                    />
+                    <path
+                      fill="#007527"
+                      d="M326.5,301c0,2.485-2.015,4.5-4.5,4.5s-4.5-2.015-4.5-4.5s2.015-4.5,4.5-4.5S326.5,298.515,326.5,301z"
+                    />
+                    <path
+                      fill="#007527"
+                      d="M357.5,252c0,2.485-2.015,4.5-4.5,4.5s-4.5-2.015-4.5-4.5s2.015-4.5,4.5-4.5S357.5,249.515,357.5,252z"
+                    />
+                  </g>
+                  <path
+                    id="repeat5"
+                    data-name="repeat5"
+                    fill="orange"
+                    d="M331.5,346c0,2.485-2.015,4.5-4.5,4.5
+		s-4.5-2.015-4.5-4.5s2.015-4.5,4.5-4.5S331.5,343.515,331.5,346z"
+                  />
+                  <path
+                    id="repeat4"
+                    data-name="repeat4"
+                    fill="orange"
+                    d="M765.5,295c0,2.485-2.015,4.5-4.5,4.5
+		s-4.5-2.015-4.5-4.5s2.015-4.5,4.5-4.5S765.5,292.515,765.5,295z"
+                  />
+                  <path
+                    id="repeat3"
+                    data-name="repeat3"
+                    fill="orange"
+                    d="M717.5,362c0,2.485-2.015,4.5-4.5,4.5
+		s-4.5-2.015-4.5-4.5s2.015-4.5,4.5-4.5S717.5,359.515,717.5,362z"
+                  />
+                  <path
+                    id="repeat2"
+                    data-name="repeat2"
+                    fill="orange"
+                    d="M442.5,447c0,2.485-2.015,4.5-4.5,4.5
+		s-4.5-2.015-4.5-4.5s2.015-4.5,4.5-4.5S442.5,444.515,442.5,447z"
+                  />
+                  <path
+                    id="repeat1"
+                    data-name="repeat1"
+                    fill="orange"
+                    d="M461.5,385c0,2.485-2.015,4.5-4.5,4.5
+		s-4.5-2.015-4.5-4.5s2.015-4.5,4.5-4.5S461.5,382.515,461.5,385z"
+                  />
+                </g>
+                <style>
+                  #g-Delivery_route_svg-Artboard_1-interactions-img rect,
+                  #g-Delivery_route_svg-Artboard_1-interactions-img circle,
+                  #g-Delivery_route_svg-Artboard_1-interactions-img path,
+                  #g-Delivery_route_svg-Artboard_1-interactions-img line,
+                  #g-Delivery_route_svg-Artboard_1-interactions-img polyline,
+                  #g-Delivery_route_svg-Artboard_1-interactions-img polygon {
+                    vector-effect: non-scaling-stroke;
+                  }
+                </style>
+              </svg>
+
+              <div
+                id="home_text"
+                class="g-interactions g-aiAbs g-aiPointText"
+                style="
+                  top: 55.0162%;
+                  margin-top: -8.1px;
+                  left: 39.6995%;
+                  width: 54px;
+                "
+              >
+                <p class="g-pstyle0">Home</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- End ai2html - 2022-07-31 17:48 -->
+
+          <!-- ai2html goes above this line -->
+        </div>
+      </div>
+
+      <div class="scrolly-overlay">
+        <div class="step" id="step-zero">
+          <p>
+            We set off from our home &#127969; in Bukit Batok at 12pm &#128347;
+            and drove southwards.
+          </p>
+        </div>
+        <div class="step" id="step-one">
+          <p>Here, we have two repeat customers.</p>
+        </div>
+        <div class="step" id="step-two">
+          <p>One of them works in a beauty and wellness salon &#128134;.</p>
+        </div>
+        <div class="step" id="step-three">
+          <p>
+            The other one lives in a condo next to Haw Par Villa, a tourist
+            attraction known for its "18 Courts of Hell" &#128520;.
+          </p>
+        </div>
+        <div class="step" id="step-four">
+          <p>
+            Then we drove eastwards to deliver to a few stops in central
+            Singapore. The traffic here is BAD &#128544;.
+          </p>
+        </div>
+        <div class="step" id="step-five">
+          <p>
+            Next, we delivered to a repeat customer who's rarely home when we
+            arrived. I've not seen her in the flesh.
+          </p>
+        </div>
+        <div class="step" id="step-six">
+          <p>
+            And we continued eastwards until we're almost reaching Changi
+            Airport &#128747; on the other end of the island. This stop is
+            worthwhile though as the customer has always ordered many jars from
+            us at once. She's left glowing reviews
+            &#11088;&#11088;&#11088;&#11088;&#11088; for us online too.
+          </p>
+        </div>
+        <div class="step" id="step-seven">
+          <p>
+            We went to a few more stops in the northeast, home to the newer
+            residential districts where many young families live &#128106;.
+          </p>
+        </div>
+        <div class="step" id="step-eight">
+          <p>
+            And we had to make a stop at Woodlands, which is close to the
+            wildlife reserve is &#128005; &#128018; &#128024;.
+          </p>
+        </div>
+        <div class="step" id="step-nine">
+          <p>
+            After we've delivered to 4 more customers in the West (one of them a
+            very pleasant repeat customer), it's almost 7pm. We're tired and
+            hungry but happy that we're done for the day &#128512;
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <script>
+      /* Scrollytelling code goes under here */
+
+      d3.select("#home_text").classed("hidden", false)
+      d3.select("#home").classed("hidden", false)
+      d3.select("#west").classed("hidden", true)
+      d3.select("#northeast").classed("hidden", true)
+      d3.select("#centre").classed("hidden", true)
+      d3.select("#south").classed("hidden", true)
+      d3.select("#north").classed("hidden", true)
+      d3.select("#repeat1").classed("hidden", true)
+      d3.select("#repeat2").classed("hidden", true)
+      d3.select("#repeat3").classed("hidden", true)
+      d3.select("#repeat4").classed("hidden", true)
+      d3.select("#repeat5").classed("hidden", true)
+
+      // Step zero in code
+      d3.select("#step-zero").on("stepin", function (e) {
+        console.log("Got to step zero")
+        d3.select("#south").classed("hidden", false)
+      })
+      //Step zero out code
+      d3.select("#step-zero").on("stepout", function (e) {
+        if (e.detail.direction === "up") {
+          d3.select("#south").classed("hidden", true)
+        }
+      })
+
+      // Step one in code
+      d3.select("#step-one").on("stepin", function (e) {
+        console.log("Got to step one")
+        d3.select("#repeat1").classed("hidden", false)
+        d3.select("#repeat2").classed("hidden", false)
+      })
+      // Step one out code
+      d3.select("#step-one").on("stepout", function (e) {
+        if (e.detail.direction === "up") {
+          d3.select("#repeat1").classed("hidden", true)
+          d3.select("#repeat2").classed("hidden", true)
+        }
+      })
+
+      // Step two in code
+      d3.select("#step-two").on("stepin", function (e) {
+        console.log("Got to step two")
+        d3.select("#repeat1").style("stroke", "black")
+      })
+      // Step two out code
+      d3.select("#step-two").on("stepout", function (e) {
+        if (e.detail.direction === "up") {
+          d3.select("#repeat1").style("stroke", "none")
+        }
+      })
+
+      // Step three in code
+      d3.select("#step-three").on("stepin", function (e) {
+        console.log("Got to step three")
+        d3.select("#repeat2").style("stroke", "black")
+      })
+      //step three out code
+      d3.select("#step-three").on("stepout", function (e) {
+        if (e.detail.direction === "up") {
+          d3.select("#repeat2").style("stroke", "none")
+        }
+      })
+
+      // Step four in code
+      d3.select("#step-four").on("stepin", function (e) {
+        console.log("Got to step four")
+        d3.select("#centre").classed("hidden", false)
+      })
+      //step four out code
+      d3.select("#step-four").on("stepout", function (e) {
+        if (e.detail.direction === "up") {
+          d3.select("#centre").classed("hidden", true)
+        }
+      })
+
+      // Step five in code
+      d3.select("#step-five").on("stepin", function (e) {
+        console.log("Got to step five")
+        d3.select("#repeat3").classed("hidden", false).style("stroke", "black")
+      })
+      //step five out code
+      d3.select("#step-five").on("stepout", function (e) {
+        if (e.detail.direction === "up") {
+          d3.select("#repeat3").classed("hidden", true).style("stroke", "none")
+        }
+      })
+
+      // Step six in code
+      d3.select("#step-six").on("stepin", function (e) {
+        console.log("Got to step six")
+        d3.select("#repeat4").classed("hidden", false).style("stroke", "black")
+      })
+      //step six out code
+      d3.select("#step-six").on("stepout", function (e) {
+        if (e.detail.direction === "up") {
+          d3.select("#repeat4").classed("hidden", true).style("stroke", "none")
+        }
+      })
+
+      // Step seven in code
+      d3.select("#step-seven").on("stepin", function (e) {
+        console.log("Got to step seven")
+        d3.select("#northeast").classed("hidden", false)
+      })
+      //step seven out code
+      d3.select("#step-seven").on("stepout", function (e) {
+        if (e.detail.direction === "up") {
+          d3.select("#northeast").classed("hidden", true)
+        }
+      })
+
+      // Step eight in code
+      d3.select("#step-eight").on("stepin", function (e) {
+        console.log("Got to step eight")
+        d3.select("#north").classed("hidden", false)
+      })
+      //step eight out code
+      d3.select("#step-eight").on("stepout", function (e) {
+        if (e.detail.direction === "up") {
+          d3.select("#north").classed("hidden", true)
+        }
+      })
+
+      // Step nine in code
+      d3.select("#step-nine").on("stepin", function (e) {
+        // console.log("Got to step nine")
+        d3.select("#west").classed("hidden", false)
+        d3.select("#repeat5").classed("hidden", false).style("stroke", "black")
+      })
+
+      //step nine out code
+      d3.select("#step-nine").on("stepout", function (e) {
+        //undo something
+        if (e.detail.direction === "up") {
+          d3.select("#west").classed("hidden", true)
+          d3.select("#repeat5").classed("hidden", true).style("stroke", "none")
+        }
+      })
+    </script>
+
+    <script>
+      const scroller = scrollama()
+
+      scroller
+        .setup({
+          step: "#scrolly .scrolly-overlay .step",
+          offset: 0.7,
+          debug: false,
+        })
+        .onStepEnter(function ({ element, index, direction }) {
+          const event = new CustomEvent("stepin", {
+            detail: { direction: direction },
+          })
+          element.dispatchEvent(event)
+        })
+        .onStepExit(function ({ element, index, direction }) {
+          const event = new CustomEvent("stepout", {
+            detail: { direction: direction },
+          })
+          element.dispatchEvent(event)
+        })
+
+      window.addEventListener("resize", scroller.resize)
+    </script>
+
+    <!-- ai2html resizer script -->
+
+    <script type="text/javascript">
+      ;(function () {
+        // only want one resizer on the page
+        if (
+          document.documentElement.className.indexOf("g-resizer-v3-init") > -1
+        )
+          return
+        document.documentElement.className += " g-resizer-v3-init"
+        // require IE9+
+        if (!("querySelector" in document)) return
+        function resizer() {
+          var elements = Array.prototype.slice.call(
+              document.querySelectorAll(".g-artboard[data-min-width]")
+            ),
+            widthById = {}
+          elements.forEach(function (el) {
+            var parent = el.parentNode,
+              width =
+                widthById[parent.id] || parent.getBoundingClientRect().width,
+              minwidth = el.getAttribute("data-min-width"),
+              maxwidth = el.getAttribute("data-max-width")
+            widthById[parent.id] = width
+
+            if (
+              +minwidth <= width &&
+              (+maxwidth >= width || maxwidth === null)
+            ) {
+              el.style.display = "block"
+            } else {
+              el.style.display = "none"
+            }
+          })
+          try {
+            if (window.parent && window.parent.$) {
+              window.parent.$("body").trigger("resizedcontent", [window])
+            }
+            if (window.require) {
+              require(["foundation/main"], function () {
+                require([
+                  "shared/interactive/instances/app-communicator",
+                ], function (AppCommunicator) {
+                  AppCommunicator.triggerResize()
+                })
+              })
+            }
+          } catch (e) {
+            console.log(e)
+          }
+        }
+
+        document.addEventListener("DOMContentLoaded", resizer)
+        // feel free to replace throttle with _.throttle, if available
+        window.addEventListener("resize", throttle(resizer, 200))
+
+        function throttle(func, wait) {
+          // from underscore.js
+          var _now =
+              Date.now ||
+              function () {
+                return new Date().getTime()
+              },
+            context,
+            args,
+            result,
+            timeout = null,
+            previous = 0
+          var later = function () {
+            previous = _now()
+            timeout = null
+            result = func.apply(context, args)
+            if (!timeout) context = args = null
+          }
+          return function () {
+            var now = _now(),
+              remaining = wait - (now - previous)
+            context = this
+            args = arguments
+            if (remaining <= 0 || remaining > wait) {
+              if (timeout) {
+                clearTimeout(timeout)
+                timeout = null
+              }
+              previous = now
+              result = func.apply(context, args)
+              if (!timeout) context = args = null
+            } else if (!timeout && options.trailing !== false) {
+              timeout = setTimeout(later, remaining)
+            }
+            return result
+          }
+        }
+      })()
+    </script>
+
+    <div class="content">
+      <p>
+        While we're happy to receive and fulfill many orders, we are also keenly
+        aware that our profit margin has been eroded as a result of inflated
+        fuel prices - courtesy of Vladimir Putin's invasion of Ukraine. Take our
+        delivery on July 2 for example. Around 15 per cent of our earnings would
+        have gone to pay for petrol.
+      </p>
+
+      <p>
+        Besides, our ingredient costs and packaging costs have also increased
+        sharply, as our suppliers, too, are grappling with higher transportation
+        costs. And we haven't even talked about the soaring utility bills.
+      </p>
+
+      <p>
+        In any case, the pain is likely to persist as long as the war wages on
+        and the embargo of Russian oil remains. We just have to bite the bullet
+        in the meantime while continuing to delight our customers with our
+        homemade goodness.
+      </p>
+
+      <h5>
+        Contact the author at cpohkwan@gmail.com if you'd like to place an order
+        &#128513;
+      </h5>
+    </div>
+  </body>
+</html>
