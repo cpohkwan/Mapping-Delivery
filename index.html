@@ -97,7 +97,7 @@
 
       .content {
         text-align: center;
-        margin: 0 3rem 0 3rem; /*top right bottom left*/
+        margin: 0 3rem 1rem 3rem; /*top right bottom left*/
       }
 
       .content h1 {
@@ -127,6 +127,11 @@
         text-align: center;
         font-style: italic;
       }
+
+      .responsive {
+        max-width: 100%;
+        height: auto;
+      }
     </style>
     <script src="https://unpkg.com/intersection-observer@0.5.1/intersection-observer.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/scrollama/3.0.4/scrollama.min.js"></script>
@@ -155,6 +160,7 @@
       <img
         src="greensmith-sgfoodiehunt.png"
         alt="Greensmith Thunder Tea Cauliflower Rice Set"
+        class="responsive"
         width="500"
         height="600"
       />
@@ -174,7 +180,7 @@
         side.
       </p>
 
-      <video width="600" height="500" controls>
+      <video max-width="100%" height="auto" controls class="responsive">
         <source src="Greensmith-video.ogg" type="video/ogg" />
         <source src="Greensmith-video.mp4" type="video/mp4" />
         Your browser does not support the video tag.
@@ -766,6 +772,8 @@
     </script>
 
     <div class="content">
+      <p></p>
+      <p></p>
       <p>
         While we're happy to receive and fulfill many orders, we are also keenly
         aware that our profit margin has been eroded as a result of inflated
