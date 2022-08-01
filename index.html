@@ -57,23 +57,17 @@
         visibility: hidden;
       }
 
-      /* When it's less than 700 pixels wide, do normal scrollytelling */
-      @media only screen and (min-width: 700px) {
-        #scrolly.side-by-side {
-          display: flex;
-        }
-      }
-
       @media (max-width: 600px) {
-      .text-container {
-        padding-left: 1em;
-        padding-right: 1em;
+        .text-container {
+          padding-left: 2em;
+          padding-right: 2em;
         }
       }
-
+      /* Set something to be a certain percent of the page's height (in this case, 75%) */
       .full-bleed-image {
-        padding: 0;
+        padding: 2em;
         min-height: 75vh;
+        align-items: center;
       }
 
       .story-body {
@@ -81,25 +75,24 @@
         max-width: 790px;
       }
 
-        #scrolly.side-by-side > div {
-          flex-basis: 0;
-          flex-grow: 1;
-          flex-shrink: 1;
-          padding: 0.75em;
-        }
-
-      #scrolly.side-by-side .scrolly-overlay {
-          margin-top: 70vh;
-          order: 0;
-          /* Change these to adjust sizing options */
-          min-width: 15rem;
-          max-width: 20rem;
+      #scrolly.side-by-side > div {
+        flex-basis: 0;
+        flex-grow: 1;
+        flex-shrink: 1;
+        padding: 0.75em;
       }
 
-        #scrolly.side-by-side .sticky-thing {
-          order: 1;
-          flex-grow: 2;
-        }
+      #scrolly.side-by-side .scrolly-overlay {
+        margin-top: 70vh;
+        order: 0;
+        /* Change these to adjust sizing options */
+        min-width: 15rem;
+        max-width: 20rem;
+      }
+
+      #scrolly.side-by-side .sticky-thing {
+        order: 1;
+        flex-grow: 2;
       }
 
       .content {
